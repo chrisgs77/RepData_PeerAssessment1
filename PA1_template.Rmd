@@ -5,14 +5,25 @@ output:
     keep_md: true
 ---
 
-
 ## Loading and preprocessing the data
+```{r}
+data <- read.csv(unz("activity.zip", "activity.csv"), header = TRUE,
+                 sep = ",") 
+# drop rows missing steps
+data2<-data[!is.na(data$steps),]
 
+# get date into date format
+data2$date<-as.Date(as.character(data2$date,''),'%Y-%m-%d')
 
+```
 
 ## What is mean total number of steps taken per day?
+```{r}
+step_day<-with(data2,aggregate(steps,by=list(date),sum,na.rm=TRUE))
+names(step_day)<-c("date","steps")
+hist(step_day$steps)
 
-
+```
 
 ## What is the average daily activity pattern?
 
